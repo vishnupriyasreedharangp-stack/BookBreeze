@@ -1,0 +1,205 @@
+{% extends 'base.html' %}
+
+{% block title %}My Orders | PyShop Books{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <!-- Header -->
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
+        <div>
+            <p class="text-uppercase small fw-semibold text-muted mb-1">
+                Your account
+            </p>
+
+            <h1 class="fw-bold mb-1">
+                My Orders
+            </h1>
+
+            <p class="text-muted mb-0">
+                Track and review your PyShop Books purchases.
+            </p>
+        </div>
+
+        <a href="{% url 'products' %}" class="btn btn-outline-dark">
+            Continue Shopping
+        </a>
+    </div>
+
+
+    {% if orders %}
+
+        <div class="row g-4">
+
+            {% for order in orders %}
+
+                <div class="col-12">
+
+                    <div class="card border-0 shadow-sm rounded-4">
+
+                        <div class="card-body p-4">
+
+                            <div class="row align-items-center g-3">
+
+                                <!-- Order Information -->
+                                <div class="col-lg-5">
+
+                                    <div class="d-flex align-items-center gap-3">
+
+                                        <div
+                                            class="rounded-3 d-flex align-items-center justify-content-center"
+                                            style="
+                                                width: 48px;
+                                                height: 48px;
+                                                background: #f1f3f5;
+                                                font-size: 1.3rem;
+                                            "
+                                        >
+                                            🛍️
+                                        </div>
+
+                                        <div>
+                                            <p class="text-muted small mb-1">
+                                                Order
+                                            </p>
+
+                                            <h5 class="fw-bold mb-1">
+                                                {{ order.order_number }}
+                                            </h5>
+
+                                            <p class="text-muted small mb-0">
+                                                {{ order.created_at|date:"d M Y, h:i A" }}
+                                            </p>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+
+                                <!-- Total -->
+                                <div class="col-md-4 col-lg-2">
+
+                                    <p class="text-muted small mb-1">
+                                        Total
+                                    </p>
+
+                                    <h5 class="fw-bold mb-0">
+                                        ₹{{ order.total_amount|floatformat:2 }}
+                                    </h5>
+
+                                </div>
+
+
+                                <!-- Status -->
+                                <div class="col-md-4 col-lg-2">
+
+                                    <p class="text-muted small mb-1">
+                                        Status
+                                    </p>
+
+                                    {% if order.status == 'confirmed' %}
+
+                                        <span class="badge rounded-pill bg-success-subtle text-success px-3 py-2">
+                                            Confirmed
+                                        </span>
+
+                                    {% elif order.status == 'pending' %}
+
+                                        <span class="badge rounded-pill bg-warning-subtle text-warning-emphasis px-3 py-2">
+                                            Pending
+                                        </span>
+
+                                    {% elif order.status == 'shipped' %}
+
+                                        <span class="badge rounded-pill bg-info-subtle text-info-emphasis px-3 py-2">
+                                            Shipped
+                                        </span>
+
+                                    {% elif order.status == 'delivered' %}
+
+                                        <span class="badge rounded-pill bg-success-subtle text-success px-3 py-2">
+                                            Delivered
+                                        </span>
+
+                                    {% elif order.status == 'cancelled' %}
+
+                                        <span class="badge rounded-pill bg-danger-subtle text-danger px-3 py-2">
+                                            Cancelled
+                                        </span>
+
+                                    {% else %}
+
+                                        <span class="badge rounded-pill bg-secondary-subtle text-secondary px-3 py-2">
+                                            {{ order.get_status_display }}
+                                        </span>
+
+                                    {% endif %}
+
+                                </div>
+
+
+                                <!-- Button -->
+                                <div class="col-md-4 col-lg-3 text-md-end">
+
+                                    <a
+                                        href="{% url 'order_detail' order.id %}"
+                                        class="btn btn-dark rounded-3 px-4"
+                                    >
+                                        View Details
+                                    </a>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+    {% else %}
+
+        <!-- Empty State -->
+        <div class="text-center py-5">
+
+            <div
+                class="mx-auto mb-4 rounded-circle d-flex align-items-center justify-content-center"
+                style="
+                    width: 90px;
+                    height: 90px;
+                    background: #f1f3f5;
+                    font-size: 2rem;
+                "
+            >
+                📦
+            </div>
+
+            <h3 class="fw-bold">
+                No orders yet
+            </h3>
+
+            <p class="text-muted mb-4">
+                Your completed purchases will appear here.
+            </p>
+
+            <a
+                href="{% url 'products' %}"
+                class="btn btn-dark px-4 py-2 rounded-3"
+            >
+                Browse Books
+            </a>
+
+        </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

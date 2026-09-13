@@ -1,0 +1,434 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Checkout | RADHESYAM Books{% endblock %}
+
+{% block content %}
+
+<section class="py-5">
+    <div class="container">
+
+        <!-- Page Header -->
+        <div class="mb-4">
+
+            <a
+                href="{% url 'cart' %}"
+                class="text-decoration-none text-secondary"
+            >
+                <i class="bi bi-arrow-left me-1"></i>
+                Back to Cart
+            </a>
+
+            <h1
+                class="fw-bold mt-3 mb-1"
+                style="font-family: Georgia, serif;"
+            >
+                Checkout
+            </h1>
+
+            <p class="text-secondary mb-0">
+                Review your order before placing it.
+            </p>
+
+        </div>
+
+
+        <div class="row g-4">
+
+            <!-- Left Column -->
+            <div class="col-lg-8">
+
+                <!-- Your Order -->
+                <div class="card border-0 shadow-sm">
+
+                    <div class="card-body p-4">
+
+                        <div
+                            class="d-flex justify-content-between
+                                   align-items-center mb-3"
+                        >
+
+                            <h4
+                                class="fw-bold mb-0"
+                                style="font-family: Georgia, serif;"
+                            >
+                                Your Order
+                            </h4>
+
+                            <span class="text-secondary small">
+                                {{ cart.total_items }} item{{ cart.total_items|pluralize }}
+                            </span>
+
+                        </div>
+
+
+                        {% for item in items %}
+
+                        <div
+                            class="row align-items-center
+                                   g-3 py-3
+                                   {% if not forloop.last %}border-bottom{% endif %}"
+                        >
+
+                            <!-- Book Cover -->
+                            <div class="col-3 col-sm-2">
+
+                                <div
+                                    class="rounded-3 overflow-hidden bg-light"
+                                    style="height:110px;"
+                                >
+
+                                    {% if item.product.isbn %}
+
+                                    <img
+                                        src="{% static 'books/' %}{{ item.product.isbn }}.jpg"
+                                        alt="{{ item.product.name }}"
+                                        class="w-100 h-100"
+                                        style="object-fit:cover;"
+                                        onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                                    >
+
+                                    <div
+                                        class="book-placeholder h-100"
+                                        style="display:none;"
+                                    >
+                                        <i class="bi bi-book"></i>
+                                    </div>
+
+                                    {% else %}
+
+                                    <div class="book-placeholder h-100">
+                                        <i class="bi bi-book"></i>
+                                    </div>
+
+                                    {% endif %}
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- Book Details -->
+                            <div class="col-6 col-sm-7">
+
+                                <h5 class="fw-bold mb-1">
+                                    {{ item.product.name }}
+                                </h5>
+
+                                <p class="text-secondary mb-1">
+                                    {{ item.product.author|default:"Unknown Author" }}
+                                </p>
+
+                                {% if item.product.category %}
+
+                                <span class="category-pill">
+                                    {{ item.product.category.name }}
+                                </span>
+
+                                {% endif %}
+
+                                <div class="mt-2">
+
+                                    <small class="text-secondary">
+                                        ₹{{ item.product.price }}
+                                        ×
+                                        {{ item.quantity }}
+                                    </small>
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- Subtotal -->
+                            <div class="col-3 text-end">
+
+                                <strong class="fs-6">
+                                    ₹{{ item.subtotal }}
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+                        {% endfor %}
+
+                    </div>
+
+                </div>
+
+
+                <!-- Customer Information -->
+                <div class="card border-0 shadow-sm mt-4">
+
+                    <div class="card-body p-4">
+
+                        <h4
+                            class="fw-bold mb-4"
+                            style="font-family: Georgia, serif;"
+                        >
+                            Customer Information
+                        </h4>
+
+
+                        <div class="row g-3">
+
+                            <!-- Name -->
+                            <div class="col-md-6">
+
+                                <label
+                                    class="form-label text-secondary"
+                                >
+                                    Name
+                                </label>
+
+                                <div class="form-control bg-light">
+                                    {{ user.first_name|default:user.username }}
+                                </div>
+
+                            </div>
+
+
+                            <!-- Username -->
+                            <div class="col-md-6">
+
+                                <label
+                                    class="form-label text-secondary"
+                                >
+                                    Username
+                                </label>
+
+                                <div class="form-control bg-light">
+                                    {{ user.username }}
+                                </div>
+
+                            </div>
+
+
+                            <!-- Email -->
+                            {% if user.email %}
+
+                            <div class="col-12">
+
+                                <label
+                                    class="form-label text-secondary"
+                                >
+                                    Email
+                                </label>
+
+                                <div class="form-control bg-light">
+                                    {{ user.email }}
+                                </div>
+
+                            </div>
+
+                            {% endif %}
+
+                        </div>
+
+
+                        <div
+                            class="alert alert-light border mt-4 mb-0"
+                        >
+                            <i class="bi bi-info-circle me-2"></i>
+
+                            <span class="small text-secondary">
+                                Your saved account information will be
+                                associated with this order.
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Right Column -->
+            <div class="col-lg-4">
+
+                <div
+                    class="card border-0 shadow-sm"
+                    style="position:sticky;top:90px;"
+                >
+
+                    <div class="card-body p-4">
+
+                        <h4
+                            class="fw-bold mb-4"
+                            style="font-family: Georgia, serif;"
+                        >
+                            Order Summary
+                        </h4>
+
+
+                        <!-- Items -->
+                        <div
+                            class="d-flex justify-content-between mb-3"
+                        >
+
+                            <span class="text-secondary">
+                                Items
+                            </span>
+
+                            <span class="fw-semibold">
+                                {{ cart.total_items }}
+                            </span>
+
+                        </div>
+
+
+                        <!-- Subtotal -->
+                        <div
+                            class="d-flex justify-content-between mb-3"
+                        >
+
+                            <span class="text-secondary">
+                                Subtotal
+                            </span>
+
+                            <span class="fw-semibold">
+                                ₹{{ total }}
+                            </span>
+
+                        </div>
+
+
+                        <!-- Shipping -->
+                        <div
+                            class="d-flex justify-content-between mb-3"
+                        >
+
+                            <span class="text-secondary">
+                                Shipping
+                            </span>
+
+                            <span class="text-success fw-semibold">
+                                Free
+                            </span>
+
+                        </div>
+
+
+                        <hr>
+
+
+                        <!-- Total -->
+                        <div
+                            class="d-flex justify-content-between
+                                   align-items-center mb-4"
+                        >
+
+                            <strong class="fs-5">
+                                Total
+                            </strong>
+
+                            <strong class="fs-4">
+                                ₹{{ total }}
+                            </strong>
+
+                        </div>
+
+
+                        <!-- Place Order -->
+                        <form method="post">
+
+                            {% csrf_token %}
+
+                            <button
+                                type="submit"
+                                class="btn btn-book btn-lg w-100"
+                            >
+                                <i class="bi bi-check-circle me-2"></i>
+                                Place Order
+                            </button>
+
+                        </form>
+
+
+                        <p
+                            class="text-secondary small
+                                   text-center mt-3 mb-0"
+                        >
+                            <i class="bi bi-shield-check me-1"></i>
+                            Your order will be confirmed immediately.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Secure Checkout -->
+                <div
+                    class="alert alert-light border mt-3"
+                    role="alert"
+                >
+
+                    <div class="d-flex">
+
+                        <i
+                            class="bi bi-shield-check fs-4 me-3"
+                        ></i>
+
+                        <div>
+
+                            <strong>
+                                Secure Checkout
+                            </strong>
+
+                            <p
+                                class="small text-secondary
+                                       mb-0 mt-1"
+                            >
+                                Your order information is handled securely.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Free Shipping -->
+                <div
+                    class="alert alert-light border"
+                    role="alert"
+                >
+
+                    <div class="d-flex">
+
+                        <i
+                            class="bi bi-truck fs-4 me-3"
+                        ></i>
+
+                        <div>
+
+                            <strong>
+                                Free Shipping
+                            </strong>
+
+                            <p
+                                class="small text-secondary
+                                       mb-0 mt-1"
+                            >
+                                Shipping is free on every PyShop Books order.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
+{% endblock %}

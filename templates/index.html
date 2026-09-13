@@ -1,0 +1,394 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Browse Books | RADHESYAM Books{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <!-- Page Header -->
+    <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-end gap-3 mb-4">
+
+        <div>
+            <p class="text-uppercase text-secondary small fw-semibold mb-1">
+                RADHESYAM Books
+            </p>
+
+            <h1 class="fw-bold mb-2">
+                Browse Books
+            </h1>
+
+            <p class="text-secondary mb-0">
+                Explore our collection and find your next great read.
+            </p>
+        </div>
+
+        <div>
+            <a href="{% url 'new_arrivals' %}"
+               class="btn btn-outline-dark">
+                New Arrivals
+            </a>
+        </div>
+
+    </div>
+
+
+    <!-- Search / Filter -->
+    <div class="card border-0 shadow-sm rounded-4 mb-5">
+
+        <div class="card-body p-4">
+
+            <form method="get">
+
+                <div class="row g-3 align-items-end">
+
+                    <!-- Search -->
+                    <div class="col-12 col-lg-5">
+
+                        <label for="search"
+                               class="form-label fw-semibold">
+                            Search books
+                        </label>
+
+                        <input
+                            type="text"
+                            name="q"
+                            id="search"
+                            value="{{ query }}"
+                            class="form-control"
+                            placeholder="Search by title, author, or ISBN..."
+                        >
+
+                    </div>
+
+
+                    <!-- Category -->
+                    <div class="col-12 col-md-6 col-lg-3">
+
+                        <label for="category"
+                               class="form-label fw-semibold">
+                            Category
+                        </label>
+
+                        <select
+                            name="category"
+                            id="category"
+                            class="form-select"
+                        >
+
+                            <option value="">
+                                All categories
+                            </option>
+
+                            {% for category in categories %}
+
+                            <option
+                                value="{{ category.slug }}"
+                                {% if selected_category == category.slug %}
+                                    selected
+                                {% endif %}
+                            >
+                                {{ category.name }}
+                            </option>
+
+                            {% endfor %}
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- Sort -->
+                    <div class="col-12 col-md-6 col-lg-2">
+
+                        <label for="sort"
+                               class="form-label fw-semibold">
+                            Sort by
+                        </label>
+
+                        <select
+                            name="sort"
+                            id="sort"
+                            class="form-select"
+                        >
+
+                            <option value="">
+                                Latest
+                            </option>
+
+                            <option
+                                value="price_low"
+                                {% if selected_sort == 'price_low' %}
+                                    selected
+                                {% endif %}
+                            >
+                                Price: Low to High
+                            </option>
+
+                            <option
+                                value="price_high"
+                                {% if selected_sort == 'price_high' %}
+                                    selected
+                                {% endif %}
+                            >
+                                Price: High to Low
+                            </option>
+
+                            <option
+                                value="name"
+                                {% if selected_sort == 'name' %}
+                                    selected
+                                {% endif %}
+                            >
+                                Name
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- Button -->
+                    <div class="col-12 col-lg-2">
+
+                        <button
+                            type="submit"
+                            class="btn btn-dark w-100"
+                        >
+                            Search
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <!-- Results Header -->
+    <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-2 mb-4">
+
+        <div>
+
+            {% if query %}
+
+            <h2 class="h4 fw-bold mb-1">
+                Search results
+            </h2>
+
+            <p class="text-secondary small mb-0">
+                Results for "{{ query }}"
+            </p>
+
+            {% elif selected_category %}
+
+            <h2 class="h4 fw-bold mb-1">
+                Books
+            </h2>
+
+            {% else %}
+
+            <h2 class="h4 fw-bold mb-1">
+                Our Collection
+            </h2>
+
+            {% endif %}
+
+        </div>
+
+        <span class="text-secondary small">
+            {{ products|length }} book{{ products|length|pluralize }}
+        </span>
+
+    </div>
+
+
+    <!-- Products -->
+    {% if products %}
+
+    <div class="row g-4">
+
+        {% for product in products %}
+
+        <div class="col-12 col-sm-6 col-lg-4 col-xl-3">
+
+            <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden">
+
+                <!-- Local Book Cover -->
+
+                <div
+                    class="bg-light position-relative"
+                    style="height: 320px;"
+                >
+
+                    {% if product.isbn %}
+
+                    <img
+                        src="{% static 'books/' %}{{ product.isbn }}.jpg"
+                        class="w-100 h-100"
+                        alt="{{ product.name }}"
+                        style="object-fit: cover;"
+                        onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                    >
+
+                    <div
+                        class="d-none w-100 h-100 align-items-center justify-content-center"
+                    >
+                        <div class="text-center text-secondary">
+
+                            <div class="display-3 mb-2">
+                                📚
+                            </div>
+
+                            <small>
+                                Cover unavailable
+                            </small>
+
+                        </div>
+                    </div>
+
+                    {% else %}
+
+                    <div
+                        class="d-flex w-100 h-100 align-items-center justify-content-center"
+                    >
+                        <div class="text-center text-secondary">
+
+                            <div class="display-3 mb-2">
+                                📚
+                            </div>
+
+                            <small>
+                                Cover unavailable
+                            </small>
+
+                        </div>
+                    </div>
+
+                    {% endif %}
+
+                </div>
+
+
+                <!-- Book Details -->
+
+                <div class="card-body d-flex flex-column p-4">
+
+                    {% if product.category %}
+
+                    <div class="mb-2">
+
+                        <span class="badge bg-light text-dark border">
+                            {{ product.category.name }}
+                        </span>
+
+                    </div>
+
+                    {% endif %}
+
+
+                    <h5 class="fw-bold mb-2">
+                        {{ product.name }}
+                    </h5>
+
+
+                    {% if product.author %}
+
+                    <p class="text-secondary small mb-2">
+                        {{ product.author }}
+                    </p>
+
+                    {% endif %}
+
+
+                    {% if product.description %}
+
+                    <p class="text-secondary small mb-3">
+                        {{ product.description|truncatechars:90 }}
+                    </p>
+
+                    {% endif %}
+
+
+                    <div class="mt-auto">
+
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+
+                            <span class="fw-bold fs-5">
+                                ₹{{ product.price }}
+                            </span>
+
+                            {% if product.stock > 0 %}
+
+                            <span class="text-success small fw-semibold">
+                                In stock
+                            </span>
+
+                            {% else %}
+
+                            <span class="text-danger small fw-semibold">
+                                Out of stock
+                            </span>
+
+                            {% endif %}
+
+                        </div>
+
+
+                        <a
+                            href="{% url 'product_detail' product.id %}"
+                            class="btn btn-outline-dark w-100"
+                        >
+                            View Details
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+
+    {% else %}
+
+    <!-- No Results -->
+
+    <div class="text-center py-5">
+
+        <div class="display-3 mb-3">
+            📚
+        </div>
+
+        <h3 class="fw-bold mb-2">
+            No books found
+        </h3>
+
+        <p class="text-secondary mb-4">
+            Try a different search term or category.
+        </p>
+
+        <a
+            href="{% url 'products' %}"
+            class="btn btn-dark px-4"
+        >
+            View All Books
+        </a>
+
+    </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

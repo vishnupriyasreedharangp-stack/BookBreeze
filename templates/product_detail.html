@@ -1,0 +1,369 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ product.name }} | RADHESYAM Books{% endblock %}
+
+{% block content %}
+
+<section class="py-5">
+    <div class="container">
+
+        <!-- Back Link -->
+        <a
+            href="{% url 'products' %}"
+            class="text-decoration-none text-secondary"
+        >
+            <i class="bi bi-arrow-left me-1"></i>
+            Back to books
+        </a>
+
+
+        <!-- Product Details -->
+        <div class="row g-5 mt-2 align-items-start">
+
+            <!-- Book Cover -->
+            <div class="col-md-5">
+
+                <div
+                    class="rounded-4 overflow-hidden shadow-sm bg-light"
+                    style="height:560px;"
+                >
+
+                    {% if product.isbn %}
+
+                    <img
+                        src="{% static 'books/' %}{{ product.isbn }}.jpg"
+                        alt="{{ product.name }}"
+                        class="w-100 h-100"
+                        style="object-fit:cover;"
+                        onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                    >
+
+                    <div
+                        class="book-placeholder h-100"
+                        style="display:none;"
+                    >
+                        <i class="bi bi-book"></i>
+                    </div>
+
+                    {% else %}
+
+                    <div class="book-placeholder h-100">
+                        <i class="bi bi-book"></i>
+                    </div>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+
+            <!-- Product Information -->
+            <div class="col-md-7">
+
+                {% if product.category %}
+
+                <span class="category-pill">
+                    {{ product.category.name }}
+                </span>
+
+                {% endif %}
+
+
+                <!-- Title -->
+                <h1
+                    class="display-5 fw-bold mt-3 mb-2"
+                    style="font-family:Georgia,serif;"
+                >
+                    {{ product.name }}
+                </h1>
+
+
+                <!-- Author -->
+                <p class="fs-5 text-secondary mb-4">
+                    <i class="bi bi-person me-1"></i>
+                    {{ product.author|default:"Unknown Author" }}
+                </p>
+
+
+                <!-- Price -->
+                <div class="mb-4">
+
+                    <span class="price fs-2">
+                        ₹{{ product.price }}
+                    </span>
+
+                </div>
+
+
+                <!-- Description -->
+                {% if product.description %}
+
+                <div class="mb-4">
+
+                    <h5
+                        class="fw-semibold"
+                        style="font-family:Georgia,serif;"
+                    >
+                        About this book
+                    </h5>
+
+                    <p class="text-secondary lh-lg mb-0">
+                        {{ product.description }}
+                    </p>
+
+                </div>
+
+                {% endif %}
+
+
+                <!-- Book Information -->
+                <div class="border-top border-bottom py-3 mb-4">
+
+                    <div class="row g-3">
+
+                        {% if product.isbn %}
+
+                        <div class="col-sm-6">
+
+                            <small class="text-secondary d-block mb-1">
+                                ISBN
+                            </small>
+
+                            <strong>
+                                {{ product.isbn }}
+                            </strong>
+
+                        </div>
+
+                        {% endif %}
+
+
+                        {% if product.published_date %}
+
+                        <div class="col-sm-6">
+
+                            <small class="text-secondary d-block mb-1">
+                                Published
+                            </small>
+
+                            <strong>
+                                {{ product.published_date }}
+                            </strong>
+
+                        </div>
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+
+                <!-- Stock / Cart -->
+                {% if product.stock > 0 %}
+
+                <div class="alert alert-success rounded-3">
+
+                    <i class="bi bi-check-circle me-1"></i>
+
+                    <strong>In stock</strong>
+
+                    {% if product.stock <= 5 %}
+
+                    <span>
+                        · Only {{ product.stock }} left
+                    </span>
+
+                    {% endif %}
+
+                </div>
+
+
+                {% if user.is_authenticated %}
+
+                <form
+                    method="post"
+                    action="{% url 'add_to_cart' product.id %}"
+                >
+
+                    {% csrf_token %}
+
+                    <button
+                        type="submit"
+                        class="btn btn-book btn-lg px-5"
+                    >
+                        <i class="bi bi-bag-plus me-2"></i>
+                        Add to Cart
+                    </button>
+
+                </form>
+
+                <small class="text-secondary d-block mt-2">
+                    <i class="bi bi-shield-check me-1"></i>
+                    Secure checkout · Easy ordering
+                </small>
+
+                {% else %}
+
+                <a
+                    href="{% url 'login' %}?next={% url 'product_detail' product.id %}"
+                    class="btn btn-book btn-lg px-5"
+                >
+                    <i class="bi bi-box-arrow-in-right me-2"></i>
+                    Login to Add to Cart
+                </a>
+
+                <small class="text-secondary d-block mt-2">
+                    Please log in to add this book to your cart.
+                </small>
+
+                {% endif %}
+
+
+                {% else %}
+
+                <!-- Out of Stock -->
+
+                <div class="alert alert-secondary rounded-3">
+
+                    <i class="bi bi-x-circle me-1"></i>
+
+                    <strong>Currently out of stock</strong>
+
+                </div>
+
+                <button
+                    class="btn btn-secondary btn-lg px-5"
+                    disabled
+                >
+                    <i class="bi bi-bag-x me-2"></i>
+                    Out of Stock
+                </button>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
+
+<!-- Related Books -->
+
+{% if related_products %}
+
+<section class="py-5 bg-white">
+
+    <div class="container">
+
+        <div class="d-flex justify-content-between align-items-center mb-4">
+
+            <div>
+
+                <h2
+                    class="mb-1"
+                    style="font-family:Georgia,serif;"
+                >
+                    You may also like
+                </h2>
+
+                <p class="text-secondary mb-0">
+                    More books you might enjoy
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="row g-4">
+
+            {% for product in related_products %}
+
+            <div class="col-12 col-sm-6 col-lg-3">
+
+                <div class="book-card h-100">
+
+                    <!-- Cover -->
+
+                    <div
+                        style="height:320px; overflow:hidden;"
+                    >
+
+                        {% if product.isbn %}
+
+                        <img
+                            src="{% static 'books/' %}{{ product.isbn }}.jpg"
+                            alt="{{ product.name }}"
+                            class="book-image w-100 h-100"
+                            style="object-fit:cover;"
+                            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                        >
+
+                        <div
+                            class="book-placeholder h-100"
+                            style="display:none;"
+                        >
+                            <i class="bi bi-book"></i>
+                        </div>
+
+                        {% else %}
+
+                        <div class="book-placeholder h-100">
+                            <i class="bi bi-book"></i>
+                        </div>
+
+                        {% endif %}
+
+                    </div>
+
+
+                    <!-- Information -->
+
+                    <div class="p-3">
+
+                        <h5 class="mb-1">
+                            {{ product.name }}
+                        </h5>
+
+                        <p class="small text-secondary mb-3">
+                            {{ product.author|default:"Unknown Author" }}
+                        </p>
+
+
+                        <div class="d-flex justify-content-between align-items-center">
+
+                            <span class="price">
+                                ₹{{ product.price }}
+                            </span>
+
+                            <a
+                                href="{% url 'product_detail' product.id %}"
+                                class="btn btn-sm btn-outline-dark"
+                            >
+                                View
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endif %}
+
+{% endblock %}

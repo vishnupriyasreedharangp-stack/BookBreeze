@@ -1,0 +1,252 @@
+{% extends 'base.html' %}
+
+{% block title %}Order Confirmed | RADHESYAM Books{% endblock %}
+
+{% block content %}
+
+<section class="py-5">
+    <div class="container">
+
+        <div class="row justify-content-center">
+
+            <div class="col-lg-8 col-xl-7">
+
+                <div class="card border-0 shadow-sm overflow-hidden">
+
+                    <!-- Success Header -->
+                    <div
+                        class="text-center px-4 py-5"
+                        style="
+                            background: linear-gradient(
+                                135deg,
+                                #f7f3ec 0%,
+                                #eee8dc 100%
+                            );
+                        "
+                    >
+
+                        <div
+                            class="mx-auto mb-4 d-flex
+                                   align-items-center
+                                   justify-content-center
+                                   rounded-circle"
+                            style="
+                                width: 90px;
+                                height: 90px;
+                                background: #ffffff;
+                                color: #2e7d32;
+                                box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+                                font-size: 2.8rem;
+                            "
+                        >
+                            <i class="bi bi-check-lg"></i>
+                        </div>
+
+                        <h1
+                            class="fw-bold mb-2"
+                            style="
+                                font-family: Georgia, serif;
+                                color: #2c241f;
+                            "
+                        >
+                            Order Confirmed!
+                        </h1>
+
+                        <p class="text-secondary mb-0 fs-5">
+                            Thank you for shopping with PyShop Books.
+                        </p>
+
+                    </div>
+
+
+                    <!-- Order Information -->
+                    <div class="card-body p-4 p-md-5">
+
+                        <div class="text-center mb-4">
+
+                            <p
+                                class="text-uppercase small fw-semibold
+                                       text-secondary mb-2"
+                                style="letter-spacing: 1.5px;"
+                            >
+                                Your Order Number
+                            </p>
+
+                            <div
+                                class="d-inline-block px-4 py-2 rounded-3"
+                                style="
+                                    background: #f8f6f1;
+                                    border: 1px solid #e6dfd4;
+                                "
+                            >
+                                <span
+                                    class="fs-4 fw-bold"
+                                    style="
+                                        font-family: Georgia, serif;
+                                        color: #5c3d2e;
+                                    "
+                                >
+                                    {{ order.order_number }}
+                                </span>
+                            </div>
+
+                        </div>
+
+
+                        <!-- Details Card -->
+                        <div
+                            class="rounded-3 p-4 mb-4"
+                            style="
+                                background: #faf9f6;
+                                border: 1px solid #eee9df;
+                            "
+                        >
+
+                            <h5
+                                class="fw-bold mb-4"
+                                style="font-family: Georgia, serif;"
+                            >
+                                Order Details
+                            </h5>
+
+
+                            <div
+                                class="d-flex justify-content-between
+                                       align-items-center mb-3"
+                            >
+                                <span class="text-secondary">
+                                    <i class="bi bi-box-seam me-2"></i>
+                                    Status
+                                </span>
+
+                                <span
+                                    class="badge rounded-pill px-3 py-2"
+                                    style="
+                                        background: #e8f5e9;
+                                        color: #2e7d32;
+                                    "
+                                >
+                                    {{ order.get_status_display }}
+                                </span>
+
+                            </div>
+
+
+                            <div
+                                class="d-flex justify-content-between
+                                       align-items-center mb-3"
+                            >
+                                <span class="text-secondary">
+                                    <i class="bi bi-currency-rupee me-2"></i>
+                                    Total Amount
+                                </span>
+
+                                <strong class="fs-5">
+                                    ₹{{ order.total_amount }}
+                                </strong>
+
+                            </div>
+
+
+                            <div
+                                class="d-flex justify-content-between
+                                       align-items-center"
+                            >
+                                <span class="text-secondary">
+                                    <i class="bi bi-calendar3 me-2"></i>
+                                    Order Date
+                                </span>
+
+                                <span class="fw-medium">
+                                    {{ order.created_at|date:"d M Y, h:i A" }}
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- Success Message -->
+                        <div
+                            class="d-flex align-items-start
+                                   rounded-3 p-3 mb-4"
+                            style="
+                                background: #f5f9f5;
+                                border: 1px solid #dcebdd;
+                            "
+                        >
+
+                            <i
+                                class="bi bi-info-circle-fill me-3 mt-1"
+                                style="color: #4f7d52;"
+                            ></i>
+
+                            <div>
+
+                                <strong class="d-block mb-1">
+                                    Your order has been placed successfully.
+                                </strong>
+
+                                <small class="text-secondary">
+                                    Please keep your order number
+                                    <strong>{{ order.order_number }}</strong>
+                                    for future reference.
+                                </small>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- Buttons -->
+                        <div class="row g-2">
+
+                            <div class="col-md-6">
+
+                                <a
+                                    href="{% url 'products' %}"
+                                    class="btn btn-dark btn-lg w-100"
+                                >
+                                    <i class="bi bi-book me-2"></i>
+                                    Continue Shopping
+                                </a>
+
+                            </div>
+
+                            <div class="col-md-6">
+
+                                <a
+                                    href="{% url 'home' %}"
+                                    class="btn btn-outline-dark btn-lg w-100"
+                                >
+                                    <i class="bi bi-house me-2"></i>
+                                    Back to Home
+                                </a>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Footer Note -->
+                <div class="text-center mt-4">
+
+                    <p class="text-secondary small mb-0">
+                        <i class="bi bi-shield-check me-1"></i>
+                        Thank you for choosing RADHESYAM Books.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
+{% endblock %}

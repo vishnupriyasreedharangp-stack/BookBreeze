@@ -1,0 +1,174 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+    My Wishlist | BookBreeze Books
+{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <!-- Page Header -->
+    <div class="text-center mb-5">
+
+        <span class="text-uppercase text-danger small fw-semibold">
+            Your collection
+        </span>
+
+        <h1 class="display-5 fw-bold mt-2">
+            My Wishlist
+        </h1>
+
+        <p class="text-muted mb-0">
+            Books you've saved for later.
+        </p>
+
+    </div>
+
+
+    {% if items %}
+
+        <!-- Wishlist Books -->
+        <div class="row g-4">
+
+            {% for item in items %}
+
+                <div class="col-12 col-md-6 col-lg-4">
+
+                    <div class="card border-0 shadow-sm h-100">
+
+                        <div class="row g-0 h-100">
+
+                            <!-- Book Cover -->
+                            <div
+                                class="col-4 bg-light d-flex align-items-center justify-content-center"
+                                style="min-height: 220px;"
+                            >
+
+                                {% if item.product.isbn %}
+
+                                    <img
+                                        src="{% static 'books/' %}{{ item.product.isbn }}.jpg"
+                                        alt="{{ item.product.name }}"
+                                        class="img-fluid"
+                                        style="
+                                            max-height: 210px;
+                                            max-width: 100%;
+                                            object-fit: contain;
+                                        "
+                                    >
+
+                                {% else %}
+
+                                    <span class="text-muted small">
+                                        No Cover
+                                    </span>
+
+                                {% endif %}
+
+                            </div>
+
+
+                            <!-- Book Information -->
+                            <div class="col-8">
+
+                                <div class="card-body d-flex flex-column h-100">
+
+                                    {% if item.product.category %}
+
+                                        <span class="small text-muted mb-2">
+                                            {{ item.product.category.name }}
+                                        </span>
+
+                                    {% endif %}
+
+
+                                    <h5 class="fw-bold">
+                                        {{ item.product.name }}
+                                    </h5>
+
+
+                                    {% if item.product.author %}
+
+                                        <p class="text-muted small mb-2">
+                                            {{ item.product.author }}
+                                        </p>
+
+                                    {% endif %}
+
+
+                                    <p class="fw-bold fs-5 mb-3">
+                                        ₹{{ item.product.price }}
+                                    </p>
+
+
+                                    <!-- Actions -->
+                                    <div class="mt-auto">
+
+                                        <a
+                                            href="{% url 'product_detail' item.product.id %}"
+                                            class="btn btn-dark btn-sm w-100 mb-2"
+                                        >
+                                            <i class="bi bi-eye me-1"></i>
+                                            View Book
+                                        </a>
+
+
+                                        <a
+                                            href="{% url 'remove_from_wishlist' item.id %}"
+                                            class="btn btn-outline-danger btn-sm w-100"
+                                        >
+                                            <i class="bi bi-heartbreak me-1"></i>
+                                            Remove
+                                        </a>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+
+    {% else %}
+
+        <!-- Empty Wishlist -->
+        <div class="text-center py-5">
+
+            <div class="display-1 mb-3 text-muted">
+                <i class="bi bi-heart"></i>
+            </div>
+
+            <h3 class="fw-bold">
+                Your wishlist is empty
+            </h3>
+
+            <p class="text-muted mb-4">
+                Save books you love and come back to them later.
+            </p>
+
+            <a
+                href="{% url 'products' %}"
+                class="btn btn-dark px-4"
+            >
+                <i class="bi bi-book me-2"></i>
+                Browse Books
+            </a>
+
+        </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

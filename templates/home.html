@@ -1,0 +1,679 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block title %}
+    BookBreeze Books | Discover Your Next Read
+{% endblock %}
+
+
+{% block content %}
+
+
+<!-- =========================================================
+     HERO
+     ========================================================= -->
+
+<section class="hero-section py-5">
+
+    <div class="container py-lg-4">
+
+        <div class="row align-items-center g-5">
+
+
+            <!-- Hero Text -->
+
+            <div class="col-lg-7">
+
+                <span class="hero-badge mb-4">
+
+                    <i class="bi bi-bookmark-star-fill"></i>
+
+                    RADHESYAM BOOKS
+
+                </span>
+
+
+                <h1 class="hero-title mb-4">
+
+                    Discover your next
+                    <br>
+                    great read.
+
+                </h1>
+
+
+                <p class="hero-text lead mb-4">
+
+                    Explore books across programming,
+                    fiction, business, science, and more.
+                    Find something worth reading today.
+
+                </p>
+
+
+                <div class="d-flex flex-wrap gap-3">
+
+
+                    <a
+                        href="{% url 'products' %}"
+                        class="btn btn-gold btn-lg"
+                    >
+
+                        <i class="bi bi-book me-2"></i>
+
+                        Browse Books
+
+                    </a>
+
+
+                    <a
+                        href="{% url 'new_arrivals' %}"
+                        class="btn btn-light btn-lg"
+                    >
+
+                        <i class="bi bi-stars me-2"></i>
+
+                        New Arrivals
+
+                    </a>
+
+
+                </div>
+
+            </div>
+
+
+            <!-- Hero Card -->
+
+            <div class="col-lg-5">
+
+                <div class="hero-card p-4 p-lg-5">
+
+                    <div class="text-center">
+
+
+                        <div class="hero-card-icon mb-4">
+
+                            <i class="bi bi-bookshelf"></i>
+
+                        </div>
+
+
+                        <h3 class="hero-card-title fw-bold mb-3">
+
+                            Your next chapter
+                            <br>
+                            starts here.
+
+                        </h3>
+
+
+                        <p class="hero-card-text mb-4">
+
+                            Browse our growing collection
+                            and discover books that inspire,
+                            educate, and entertain.
+
+                        </p>
+
+
+                        <div class="row g-3">
+
+
+                            <div class="col-4">
+
+                                <div class="hero-stat-number">
+                                    10+
+                                </div>
+
+                                <div class="hero-stat-label">
+                                    Books
+                                </div>
+
+                            </div>
+
+
+                            <div class="col-4">
+
+                                <div class="hero-stat-number">
+                                    5
+                                </div>
+
+                                <div class="hero-stat-label">
+                                    Categories
+                                </div>
+
+                            </div>
+
+
+                            <div class="col-4">
+
+                                <div class="hero-stat-number">
+                                    ∞
+                                </div>
+
+                                <div class="hero-stat-label">
+                                    Stories
+                                </div>
+
+                            </div>
+
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================================================
+     CATEGORIES
+     ========================================================= -->
+
+<section class="py-5">
+
+    <div class="container py-lg-3">
+
+
+        <div class="row align-items-end mb-4">
+
+
+            <div class="col-md-8">
+
+                <p class="section-label mb-2">
+                    Explore
+                </p>
+
+
+                <h2 class="section-title display-6 mb-2">
+                    Browse by category
+                </h2>
+
+
+                <p class="section-description mb-0">
+
+                    Find your next read by exploring
+                    our collections.
+
+                </p>
+
+            </div>
+
+
+            <div class="col-md-4 text-md-end mt-3 mt-md-0">
+
+                <a
+                    href="{% url 'products' %}"
+                    class="section-link"
+                >
+
+                    View all
+
+                    <i class="bi bi-arrow-right ms-2"></i>
+
+                </a>
+
+            </div>
+
+
+        </div>
+
+
+        {% if categories %}
+
+
+            <div class="row g-4">
+
+
+                {% for category in categories %}
+
+
+                    <div class="col-12 col-md-6 col-lg-4">
+
+                        <a
+                            href="{% url 'products' %}?category={{ category.slug }}"
+                        >
+
+                            <div class="category-card">
+
+
+                                <div class="category-icon">
+
+
+                                    {% if category.name == "Programming" %}
+
+                                        <i class="bi bi-code-slash"></i>
+
+
+                                    {% elif category.name == "Fiction" %}
+
+                                        <i class="bi bi-stars"></i>
+
+
+                                    {% elif category.name == "Business" %}
+
+                                        <i class="bi bi-briefcase"></i>
+
+
+                                    {% elif category.name == "Science" %}
+
+                                        <i class="bi bi-flask"></i>
+
+
+                                    {% elif category.name == "Self Development" %}
+
+                                        <i class="bi bi-person-up"></i>
+
+
+                                    {% else %}
+
+                                        <i class="bi bi-book"></i>
+
+
+                                    {% endif %}
+
+
+                                </div>
+
+
+                                <h4 class="category-title mb-2">
+
+                                    {{ category.name }}
+
+                                </h4>
+
+
+                                {% if category.description %}
+
+
+                                    <p class="category-description mb-0">
+
+                                        {{ category.description|truncatechars:100 }}
+
+                                    </p>
+
+
+                                {% else %}
+
+
+                                    <p class="category-description mb-0">
+
+                                        Explore books in
+                                        {{ category.name }}.
+
+                                    </p>
+
+
+                                {% endif %}
+
+
+                                <div class="category-link mt-3">
+
+                                    Explore collection
+
+                                    <i class="bi bi-arrow-right ms-1"></i>
+
+                                </div>
+
+
+                            </div>
+
+                        </a>
+
+                    </div>
+
+
+                {% endfor %}
+
+
+            </div>
+
+
+        {% else %}
+
+
+            <div class="text-center py-5 bg-white rounded-4 border">
+
+                <div class="display-4 mb-3">
+                    <i class="bi bi-bookshelf"></i>
+                </div>
+
+
+                <h4 class="fw-bold">
+                    Categories coming soon
+                </h4>
+
+
+                <p class="text-muted mb-0">
+
+                    We're building our collection.
+                    Check back soon.
+
+                </p>
+
+            </div>
+
+
+        {% endif %}
+
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================================================
+     FEATURED BOOKS
+     ========================================================= -->
+
+<section class="featured-section py-5">
+
+    <div class="container py-lg-3">
+
+
+        <div class="row align-items-end mb-4">
+
+
+            <div class="col-md-8">
+
+                <p class="section-label mb-2">
+                    Featured
+                </p>
+
+
+                <h2 class="section-title display-6 mb-2">
+                    Featured books
+                </h2>
+
+
+                <p class="section-description mb-0">
+
+                    A few books worth adding to your reading list.
+
+                </p>
+
+            </div>
+
+
+            <div class="col-md-4 text-md-end mt-3 mt-md-0">
+
+                <a
+                    href="{% url 'products' %}"
+                    class="section-link"
+                >
+
+                    Browse catalogue
+
+                    <i class="bi bi-arrow-right ms-2"></i>
+
+                </a>
+
+            </div>
+
+
+        </div>
+
+
+        {% if featured_products %}
+
+
+            <div class="row g-4">
+
+
+                {% for product in featured_products %}
+
+
+                    <div class="col-12 col-sm-6 col-lg-3">
+
+                        <div class="book-card">
+
+
+                            <!-- Cover -->
+
+                            <div class="book-cover-wrapper">
+
+
+                                {% if product.isbn %}
+
+
+                                    <img
+                                        src="{% static 'books/' %}{{ product.isbn }}.jpg"
+                                        class="book-cover"
+                                        alt="{{ product.name }}"
+                                        onerror="this.style.display='none'; this.nextElementSibling.classList.remove('d-none');"
+                                    >
+
+
+                                    <div class="cover-fallback d-none h-100 align-items-center justify-content-center">
+
+                                        <div class="text-center">
+
+                                            <div class="display-5 mb-2">
+
+                                                <i class="bi bi-book"></i>
+
+                                            </div>
+
+                                            <small>
+                                                Cover unavailable
+                                            </small>
+
+                                        </div>
+
+                                    </div>
+
+
+                                {% else %}
+
+
+                                    <div class="cover-fallback d-flex h-100 align-items-center justify-content-center">
+
+                                        <div class="text-center">
+
+                                            <div class="display-5 mb-2">
+
+                                                <i class="bi bi-book"></i>
+
+                                            </div>
+
+                                            <small>
+                                                Cover unavailable
+                                            </small>
+
+                                        </div>
+
+                                    </div>
+
+
+                                {% endif %}
+
+
+                            </div>
+
+
+                            <!-- Details -->
+
+                            <div class="card-body d-flex flex-column p-4">
+
+
+                                {% if product.category %}
+
+                                    <div class="book-category mb-2">
+
+                                        {{ product.category.name }}
+
+                                    </div>
+
+                                {% endif %}
+
+
+                                <h5 class="book-title mb-2">
+
+                                    {{ product.name }}
+
+                                </h5>
+
+
+                                {% if product.author %}
+
+                                    <p class="book-author mb-3">
+
+                                        {{ product.author }}
+
+                                    </p>
+
+                                {% endif %}
+
+
+                                <div class="mt-auto">
+
+
+                                    <div class="book-price mb-3">
+
+                                        ₹{{ product.price }}
+
+                                    </div>
+
+
+                                    <a
+                                        href="{% url 'product_detail' product.id %}"
+                                        class="btn btn-book-outline w-100"
+                                    >
+
+                                        View Details
+
+                                        <i class="bi bi-arrow-right ms-1"></i>
+
+                                    </a>
+
+
+                                </div>
+
+
+                            </div>
+
+
+                        </div>
+
+                    </div>
+
+
+                {% endfor %}
+
+
+            </div>
+
+
+        {% else %}
+
+
+            <div class="text-center py-5">
+
+                <div class="display-4 mb-3">
+
+                    <i class="bi bi-bookshelf"></i>
+
+                </div>
+
+
+                <h4 class="fw-bold">
+
+                    Our shelves are getting ready.
+
+                </h4>
+
+
+                <p class="text-muted mb-4">
+
+                    Add some books through the Django Admin
+                    to see them here.
+
+                </p>
+
+
+                <a
+                    href="{% url 'products' %}"
+                    class="btn btn-book"
+                >
+
+                    Browse Catalogue
+
+                </a>
+
+            </div>
+
+
+        {% endif %}
+
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================================================
+     CALL TO ACTION
+     ========================================================= -->
+
+<section class="py-5">
+
+    <div class="container py-lg-3">
+
+        <div class="reading-cta p-4 p-md-5 text-center">
+
+
+            <div class="reading-cta-icon mb-3">
+
+                <i class="bi bi-book-half"></i>
+
+            </div>
+
+
+            <h2 class="reading-cta-title fw-bold mb-3">
+
+                Every great journey begins with a book.
+
+            </h2>
+
+
+            <p class="reading-cta-text mx-auto mb-4">
+
+                Explore our collection and discover stories,
+                ideas, and knowledge waiting for you.
+
+            </p>
+
+
+            <a
+                href="{% url 'products' %}"
+                class="btn btn-gold"
+            >
+
+                Explore the Collection
+
+                <i class="bi bi-arrow-right ms-2"></i>
+
+            </a>
+
+
+        </div>
+
+    </div>
+
+</section>
+
+
+{% endblock %}

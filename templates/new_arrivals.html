@@ -1,0 +1,146 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <div class="text-center mb-5">
+        <span class="text-uppercase text-muted small fw-semibold">
+            Fresh from the shelf
+        </span>
+
+        <h1 class="display-5 fw-bold mt-2">
+            New Arrivals
+        </h1>
+
+        <p class="text-muted mb-0">
+            Discover the latest books added to our collection.
+        </p>
+    </div>
+
+    {% if products %}
+
+    <div class="row g-4">
+
+        {% for product in products %}
+
+        <div class="col-12 col-sm-6 col-lg-4 col-xl-3">
+
+            <div class="card h-100 border-0 shadow-sm">
+
+                <div
+                    class="position-relative bg-light rounded-top"
+                    style="height: 300px;"
+                >
+
+                    {% if product.isbn %}
+
+                    <img
+                        src="{% static 'books/' %}{{ product.isbn }}.jpg"
+                        alt="{{ product.name }}"
+                        class="w-100 h-100"
+                        style="object-fit: contain;"
+                    >
+
+                    {% else %}
+
+                    <div
+                        class="d-flex align-items-center justify-content-center h-100 text-muted"
+                    >
+                        No Cover
+                    </div>
+
+                    {% endif %}
+
+                </div>
+
+                <div class="card-body d-flex flex-column">
+
+                    {% if product.category %}
+
+                    <span class="small text-muted mb-2">
+                        {{ product.category.name }}
+                    </span>
+
+                    {% endif %}
+
+                    <h5 class="card-title fw-bold">
+                        {{ product.name }}
+                    </h5>
+
+                    {% if product.author %}
+
+                    <p class="text-muted mb-3">
+                        {{ product.author }}
+                    </p>
+
+                    {% endif %}
+
+                    <div class="mt-auto">
+
+                        <div
+                            class="d-flex justify-content-between align-items-center mb-3"
+                        >
+
+                            <span class="fw-bold fs-5">
+                                ₹{{ product.price }}
+                            </span>
+
+                            {% if user.is_authenticated %}
+
+                            <a
+                                href="{% url 'add_to_wishlist' product.id %}"
+                                class="btn btn-outline-danger rounded-circle"
+                                title="Add to wishlist"
+                            >
+                                ♥
+                            </a>
+
+                            {% endif %}
+
+                        </div>
+
+                        <a
+                            href="{% url 'product_detail' product.id %}"
+                            class="btn btn-dark w-100"
+                        >
+                            View Book
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+    {% else %}
+
+    <div class="text-center py-5">
+
+        <h3>No new arrivals yet</h3>
+
+        <p class="text-muted">
+            Check back soon for new books.
+        </p>
+
+        <a
+            href="{% url 'products' %}"
+            class="btn btn-dark"
+        >
+            Browse All Books
+        </a>
+
+    </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}
