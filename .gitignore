@@ -126,3 +126,5 @@ dmypy.json
 
 # Custom additions
 rsc/
+
+templates/Python programs/
