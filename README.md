@@ -17,8 +17,11 @@ BookBreeze Books was developed as a portfolio project to demonstrate practical b
 ## 📸 Project Preview
 
 ### Home Page
+## 📸 Project Preview
 
-![BookBreeze Books Home Page](pyshop-app.png)
+### Home Page
+
+The BookBreeze Books interface provides a clean, responsive shopping experience with book discovery, categories, search, filtering, wishlist, cart, and checkout functionality.
 
 ---
 
