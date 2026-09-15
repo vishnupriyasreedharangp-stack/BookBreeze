@@ -10,7 +10,7 @@ BookBreeze Books was developed as a portfolio project to demonstrate practical b
 
 🔗 **Live Demo:** Coming soon
 
-🔗 **GitHub Repository:** https://github.com/YOUR-USERNAME/BookBreeze-Books
+🔗 **GitHub Repository:** https://github.com//vishnupriyasreedharangp-stack/BookBreeze-Books
 
 ---
 
