@@ -1,121 +1,193 @@
-# BookBreeze Books 📚
+# 📚 BookBreeze Books
 
-A full-stack online bookstore built with Python and Django.
+A full-stack online bookstore built with **Python and Django**, featuring user authentication, book discovery, search and filtering, shopping cart, wishlist, checkout, order management, stock validation, and a responsive Bootstrap interface.
 
-BookBreeze Books is a portfolio project demonstrating Django web development, database design, authentication, e-commerce workflows, and responsive frontend development.
+BookBreeze Books was developed as a portfolio project to demonstrate practical backend development, database design, Django ORM, authentication, transactional workflows, and responsive web application development.
 
-## 🚀 Features
+---
 
-### User Authentication
-- User registration
-- Login and logout
-- Authenticated user sessions
-- User-specific cart, wishlist, and orders
+## 🚀 Live Demo
 
-### Book Catalogue
+🔗 **Live Demo:** Coming soon
+
+🔗 **GitHub Repository:** https://github.com/YOUR-USERNAME/BookBreeze-Books
+
+---
+
+## 📸 Project Preview
+
+### Home Page
+
+![BookBreeze Books Home Page](pyshop-app.png)
+
+---
+
+## ✨ Features
+
+### 👤 User Authentication
+
+- User registration and login
+- Django authentication system
+- Secure session-based authentication
+- Login-protected shopping features
+- Logout functionality
+
+### 📖 Book Catalogue
+
 - Browse available books
 - Book categories
-- Search books by title, author, or ISBN
-- Filter books by category
-- Sort books by:
-  - Newest
-  - Price: Low to High
-  - Price: High to Low
-  - Name
-- Book detail pages
-- New Arrivals section
+- Book details
+- Author information
+- ISBN information
+- Pricing and stock availability
+- Book cover images
+- New arrivals section
 
-### Shopping Cart
+### 🔎 Search & Filtering
+
+Users can discover books using:
+
+- Keyword search
+- Category filtering
+- Newest books
+- Price: Low to High
+- Price: High to Low
+- Name-based sorting
+
+### 🛒 Shopping Cart
+
 - Add books to cart
-- Remove books from cart
-- Quantity management
-- Automatic cart totals
-- Stock availability validation
+- Increase product quantities
+- Remove items
+- Automatic subtotal calculation
+- Automatic cart total
+- Stock-aware purchasing
 
-### Wishlist
+### ❤️ Wishlist
+
 - Add books to wishlist
 - Remove books from wishlist
-- User-specific wishlist
 - Prevent duplicate wishlist items
+- Dedicated wishlist page
 
-### Checkout & Orders
-- Secure checkout flow
-- Stock validation before order creation
-- Transaction-based order processing
-- Automatic stock reduction
-- Order number generation
+### 💳 Checkout & Orders
+
+- Checkout from cart
+- Validate product stock before ordering
+- Create orders and order items
+- Automatically calculate order totals
+- Reduce inventory after successful purchase
+- Clear cart after successful checkout
+- Order success page
 - Order history
-- Detailed order pages
-- Order status tracking
+- Individual order details
 
-### Django Admin
-- Manage books
-- Manage categories
-- Manage offers
-- View orders
-- View order items
-- Manage application data through Django Admin
+### 📦 Inventory Management
 
-## 🛠️ Tech Stack
+- Product stock tracking
+- Stock validation during checkout
+- Prevent purchases when sufficient stock is unavailable
+- Inventory automatically updated after successful orders
 
-### Backend
-- Python 3.12
-- Django 5.2.7
-- Django ORM
-- SQLite
+### 🔐 Transaction-Safe Checkout
 
-### Frontend
-- HTML5
-- CSS3
-- Bootstrap 5
-- Bootstrap Icons
-- Google Fonts
+Checkout processing uses Django database transactions to keep order creation, inventory updates, and cart clearing consistent.
 
-### Development Tools
-- Git
-- GitHub
-- Django Management Commands
+The checkout workflow uses:
 
-## 🗂️ Project Structure
+- `transaction.atomic()`
+- `select_for_update()`
+- Stock validation
+- Order and OrderItem creation
+- Inventory updates
+
+This helps prevent inconsistent order and inventory states during concurrent requests.
+
+### 🛠️ Django Admin
+
+The project includes a customized Django Admin interface for managing:
+
+- Categories
+- Products
+- Offers
+- Orders
+- Order items
+
+Orders include inline order-item management for easier administration.
+
+---
+
+## 🧰 Tech Stack
+
+| Technology | Purpose |
+|---|---|
+| Python 3.12 | Backend programming |
+| Django 5.2.7 | Web framework |
+| SQLite | Development database |
+| Django ORM | Database interaction |
+| HTML5 | Page structure |
+| CSS3 | Styling |
+| Bootstrap 5 | Responsive UI |
+| Bootstrap Icons | Interface icons |
+| JavaScript | Client-side interactions |
+| Git | Version control |
+| GitHub | Source code hosting |
+
+---
+
+## 🏗️ Project Architecture
+
+The application follows a Django project/app structure:
 
 ```text
-PyShop-master/
+BookBreeze-Books/
 │
 ├── manage.py
-│
-├── products/
-│   ├── migrations/
-│   ├── management/
-│   ├── templates/
-│   ├── admin.py
-│   ├── forms.py
-│   ├── models.py
-│   ├── urls.py
-│   └── views.py
+├── requirements.txt
+├── README.md
+├── .gitignore
 │
 ├── pyshop/
 │   ├── settings.py
 │   ├── urls.py
-│   ├── asgi.py
-│   └── wsgi.py
+│   ├── wsgi.py
+│   └── __init__.py
 │
-├── static/
-│   └── books/
+├── products/
+│   ├── admin.py
+│   ├── apps.py
+│   ├── forms.py
+│   ├── models.py
+│   ├── urls.py
+│   ├── views.py
+│   │
+│   ├── management/
+│   │   └── commands/
+│   │       └── fetch_book_covers.py
+│   │
+│   └── migrations/
 │
 ├── templates/
 │   ├── base.html
 │   ├── home.html
 │   ├── index.html
 │   ├── product_detail.html
-│   ├── new_arrivals.html
 │   ├── cart.html
 │   ├── wishlist.html
 │   ├── checkout.html
-│   ├── order_history.html
 │   ├── order_detail.html
+│   ├── order_history.html
 │   └── registration/
 │
-├── .gitignore
-├── requirements.txt
-├── README.md
-└── pyshop-app.png
+└── static/
+    └── books/
+        ├── 9781593279288.jpg
+        ├── 9780132350884.jpg
+        ├── 9780135957059.jpg
+        ├── 9780735211292.jpg
+        ├── 9780857197689.jpg
+        ├── 9780804139298.jpg
+        ├── 9780062315007.jpg
+        ├── 9780451524935.jpg
+        ├── 9780553380163.jpg
+        └── 9780062316097.jpg
